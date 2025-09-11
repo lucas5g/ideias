@@ -7,7 +7,7 @@ import { env } from 'process';
 
 describe('PhraseService', () => {
   let service: PhraseService;
-  const id = 1;
+  const id = 30;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

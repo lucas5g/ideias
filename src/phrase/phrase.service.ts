@@ -59,6 +59,9 @@ export class PhraseService {
 
   async findAll() {
     const res = await prisma.phrase.findMany({
+      orderBy: {
+        portuguese: 'asc',
+      },
       omit: {
         audio: true,
       },

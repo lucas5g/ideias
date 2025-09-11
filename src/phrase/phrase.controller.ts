@@ -19,7 +19,7 @@ export class PhraseController {
 
   @Post()
   create(@Body() createPhraseDto: CreatePhraseDto) {
-    return this.phraseService.create(createPhraseDto);
+    return this.phraseService.upsert(createPhraseDto);
   }
 
   @Get()

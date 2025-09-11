@@ -1,53 +1,86 @@
 const API = 'http://[::1]:3002'
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetch(API + '/phrases')
-    .then(response => response.json())
-    .then(data => {
+async function getPhrases() {
+  try {
+    const res = await fetch(API + '/phrases')
+    const data = await res.json()
 
-      const tbody = document.querySelector('tbody')
-      
-      for(const phrase of data) {
-        
-        const tr = tbody.insertRow()
-        tr.className = 'border-b border-gray-400 h-14 last:border-b-0'
-        tr.insertCell().textContent = phrase.id
-        tr.insertCell().textContent = phrase.portuguese
-        tr.insertCell().textContent = phrase.english
+    const tbody = document.querySelector('tbody')
 
-      }
+    tbody.innerHTML = ''
 
+    data.forEach((phrase, index) => {
+      const tr = tbody.insertRow()
+      tr.className = 'border-b border-gray-400 h-14 last:border-b-0'
+      tr.insertCell().textContent = index + 1
+      tr.insertCell().textContent = phrase.portuguese
+      tr.insertCell().textContent = phrase.english
+
+      // Cria a célula com o botão
+      const cell = tr.insertCell()
+      const button = document.createElement('button')
+      button.className = 'bg-gray-500 h-10 w-10 pt-1 rounded-full hover:bg-gray-400'
+      button.innerHTML = `<i class="ph ph-play"></i>`
+
+      cell.appendChild(button)
+
+      // Cria o player de áudio
+      const audio = new Audio(phrase.audio)
+
+      // Ao clicar no botão, toca o áudio
+      button.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play()
+          button.innerHTML = `<i class="ph ph-pause"></i>`
+          return
+        }
+        audio.pause()
+        button.innerHTML = `<i class="ph ph-play"></i>`
+      })
+
+      // Quando o áudio terminar, volta para play
+      audio.addEventListener('ended', () => {
+        button.innerHTML = `<i class="ph ph-play"></i>`
+      })
     })
+
+  } catch (error) {
+    console.error(error)
+    alert(error)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await getPhrases()
 })
 
-document.addEventListener('submit', (e) => {
+document.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData);
+  const payload = Object.fromEntries(formData);
 
   const button = document.querySelector('#button-submit')
   button.disabled = true
   button.textContent = 'Loading...'
 
+  try {
 
-  fetch(API + '/phrases', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
+    await fetch(API + '/phrases', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
     })
-    .catch((error) => {
-      console.error(error)
-    })
-    .finally(() => {
-      button.disabled = false
-      button.textContent = 'Submit'
-      // e.target.reset()
-    })
+    await getPhrases()
+
+  } catch (error) {
+    console.error(error)
+    alert(error)
+  } finally {
+    button.disabled = false
+    button.textContent = 'Save'
+    // e.target.reset()
+  }
 })
