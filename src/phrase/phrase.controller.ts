@@ -11,7 +11,7 @@ import {
 import { PhraseService } from './phrase.service';
 import { CreatePhraseDto } from './dto/create-phrase.dto';
 import { UpdatePhraseDto } from './dto/update-phrase.dto';
-import { Response } from 'express';
+import type { Response } from 'express';
 
 @Controller('phrases')
 export class PhraseController {
