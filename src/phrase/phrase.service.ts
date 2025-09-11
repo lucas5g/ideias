@@ -7,6 +7,7 @@ import { TagService } from '@/tag/tag.service';
 import { Prisma } from '@prisma/client';
 import { env } from '@/utils/env';
 import { gemini } from '@/utils/gemini';
+import { FindAllPhraseDto } from './dto/find-all-phrase.dto';
 
 @Injectable()
 export class PhraseService {
@@ -69,13 +70,39 @@ export class PhraseService {
     });
   }
 
-  async findAll() {
+  async findAll(dto?: FindAllPhraseDto) {
     const res = await prisma.phrase.findMany({
+      where: {
+        portuguese: {
+          contains: dto?.portuguese,
+        },
+        english: {
+          contains: dto?.english,
+        },
+        tags: {
+          some: {
+            tag: {
+              name: dto?.tag,
+            },
+          },
+        },
+      },
       orderBy: {
         portuguese: 'asc',
       },
-      omit: {
-        audio: true,
+      select: {
+        id: true,
+        portuguese: true,
+        english: true,
+        tags: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -86,6 +113,7 @@ export class PhraseService {
     return res.map((row) => {
       return {
         ...row,
+        tags: row.tags.map((tag) => tag.tag.name),
         audio: `${baseUrl}/phrases/${row.id}/audio.mp3`,
       };
     });

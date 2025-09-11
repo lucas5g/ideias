@@ -18,9 +18,14 @@ describe('PhraseService', () => {
   });
 
   it('upsert', async () => {
+    // const payload: CreatePhraseDto = {
+    //   portuguese: 'eu como pão.',
+    //   tag: 'test',
+    // };
+
     const payload: CreatePhraseDto = {
-      portuguese: 'eu como pão.',
-      tag: 'test',
+      portuguese: 'bom dia.',
+      tag: 'test2',
     };
 
     const dto = plainToInstance(CreatePhraseDto, payload);
@@ -40,6 +45,24 @@ describe('PhraseService', () => {
     }
 
     expect(res).toBeInstanceOf(Array);
+  });
+
+  it('findAll portuguese=bom dia', async () => {
+    const portuguese = 'bom di';
+    const res = await service.findAll({ portuguese });
+
+    expect(
+      res.every((phrase) => phrase.portuguese.includes(portuguese)),
+    ).toBeTruthy();
+  });
+
+  it('findAll tag=test2', async () => {
+    const tag = 'test2';
+    const res = await service.findAll({ tag });
+
+    expect(
+      res.every((phrase) => phrase.tags.some((row) => row === tag)),
+    ).toBeTruthy();
   });
 
   it('findOne', async () => {
