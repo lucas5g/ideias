@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreatePhraseDto } from './dto/create-phrase.dto';
 import { UpdatePhraseDto } from './dto/update-phrase.dto';
 import { prisma } from '@/utils/prisma';
-import { translate } from '@/utils/translate';
 import { elevenLabs } from '@/utils/eleven-labs';
 import { TagService } from '@/tag/tag.service';
 import { Prisma } from '@prisma/client';
 import { env } from '@/utils/env';
+import { gemini } from '@/utils/gemini';
 
 @Injectable()
 export class PhraseService {
@@ -43,7 +43,8 @@ export class PhraseService {
   }
 
   async create(createPhraseDto: CreatePhraseDto) {
-    const english = await translate(createPhraseDto.portuguese);
+    const english =
+      (await gemini(createPhraseDto.portuguese)) ?? 'no translation';
 
     return await prisma.phrase.create({
       data: {

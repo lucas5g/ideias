@@ -1,4 +1,5 @@
-const API = 'http://[::1]:3002'
+// const API = 'http://[::1]:3002'
+const API = 'https://ideias.dizelequefez.com.br'
 
 async function getPhrases() {
   try {

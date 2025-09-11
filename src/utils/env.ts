@@ -1,4 +1,5 @@
 import z from 'zod';
+import 'dotenv/config';
 
 export const env = z
   .object({
@@ -7,5 +8,6 @@ export const env = z
     ELEVEN_LABS_API_KEY: z.string(),
     PORT: z.coerce.number(),
     BASE_URL_API: z.string(),
+    GEMINI_API_KEY: z.string(),
   })
   .parse(process.env);
