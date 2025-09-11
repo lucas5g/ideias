@@ -55,9 +55,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   await getPhrases()
 })
 
-document.addEventListener('submit', async (e) => {
+document.querySelector('#form-search').addEventListener('submit', async (e) => {
   e.preventDefault();
+  const formData = new FormData(e.target);
+  const payload = Object.fromEntries(formData);
 
+  console.log(payload)
+})
+
+document.querySelector('#form-create').addEventListener('submit', async (e) => {
+  e.preventDefault();
   const formData = new FormData(e.target);
   const payload = Object.fromEntries(formData);
 

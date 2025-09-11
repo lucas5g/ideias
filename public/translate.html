@@ -16,7 +16,7 @@
         @apply flex flex-col gap-1;
       }
       .input-field{
-        @apply bg-gray-500 py-3 px-4 rounded placeholder:text-gray-400
+        @apply bg-gray-500 py-3 px-4 rounded placeholder:text-gray-400 w-full
       }
       .card {
         @apply bg-gray-800 p-10 rounded flex flex-col gap-5 w-full
@@ -24,13 +24,17 @@
       .title{
         @apply text-2xl font-bold text-right
       }
+
+      .button{
+        @apply bg-gray-600 hover:bg-gray-500 font-bold py-3 rounded disabled:cursor-not-allowed disabled:bg-gray-700 w-full
+      }
     }
   </style>
   <title>Document</title>
 </head>
 
 <body class="bg-gray-950 flex gap-5 flex-col items-center justify-center h-screen text-white p-10">
-  <form class="card ">
+  <form class="card" id="form-create" >
     <h2 class="title">Create</h2>
 
     <div class="input-group">
@@ -46,8 +50,7 @@
       </label>
       <input id="tag" name="tag" type="text" placeholder="Tag" class="input-field" required>
     </div>
-    <button id="button-submit"
-      class="bg-gray-600 hover:bg-gray-500 font-bold py-3 rounded disabled:cursor-not-allowed disabled:bg-gray-700">
+    <button id="button-submit" class="button">
       Save
     </button>
 
@@ -55,7 +58,15 @@
 
   <div class="card">
     <h2 class="title">List</h2>
-    <input type="text" placeholder="Search" class="input-field">
+    <form class="flex gap-2" id="form-search">
+      <input type="text" name="portuguese" placeholder="Search portuguese" class="input-field">
+      <input type="text" name="english" placeholder="Search english" class="input-field">
+      <input type="text" name="tag" placeholder="Search tag" class="input-field">
+      <button class="button">
+        <i class="ph ph-magnifying-glass"></i>
+      </button>
+    </form>
+
     <table>
       <thead class="text-left">
         <tr>
