@@ -20,10 +20,21 @@ export class PhraseService {
         name: dto.tag,
       }));
 
-    const phrase =
-      (await this.findOneWhere({
+    const english = await gemini(dto.portuguese);
+
+    const data: Prisma.PhraseCreateInput = {
+      portuguese: dto.portuguese,
+      english,
+      audio: await elevenLabs(english),
+    };
+
+    const phrase = await prisma.phrase.upsert({
+      where: {
         portuguese: dto.portuguese,
-      })) ?? (await this.create(dto));
+      },
+      update: data,
+      create: data,
+    });
 
     await prisma.phraseTag.upsert({
       where: {

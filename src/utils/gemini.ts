@@ -16,5 +16,5 @@ export async function gemini(text: string) {
     },
   });
 
-  return response.text;
+  return response.text ?? 'no translation';
 }
