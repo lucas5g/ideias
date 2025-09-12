@@ -3,11 +3,11 @@ import { PhraseService } from './phrase.service';
 import { CreatePhraseDto } from './dto/create-phrase.dto';
 import { plainToInstance } from 'class-transformer';
 import { TagService } from '@/tag/tag.service';
-import { env } from 'process';
+import { env } from '@/utils/env';
 
 describe('PhraseService', () => {
   let service: PhraseService;
-  const id = 30;
+  const id = 1;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,11 +18,6 @@ describe('PhraseService', () => {
   });
 
   it('upsert', async () => {
-    // const payload: CreatePhraseDto = {
-    //   portuguese: 'eu como pão.',
-    //   tag: 'test',
-    // };
-
     const payload: CreatePhraseDto = {
       portuguese: 'bom dia.',
       tag: 'test2',

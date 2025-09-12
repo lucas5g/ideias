@@ -106,15 +106,11 @@ export class PhraseService {
       },
     });
 
-    const baseUrl = env.BASE_URL_API.includes('https')
-      ? env.BASE_URL_API
-      : env.BASE_URL_API.concat(':').concat(env.PORT.toString());
-
     return res.map((row) => {
       return {
         ...row,
         tags: row.tags.map((tag) => tag.tag.name),
-        audio: `${baseUrl}/phrases/${row.id}/audio.mp3`,
+        audio: `${env.BASE_URL_API}/phrases/${row.id}/audio.mp3`,
       };
     });
   }

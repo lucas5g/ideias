@@ -4,10 +4,8 @@ import 'dotenv/config';
 export const env = z
   .object({
     DATABASE_URL: z.string(),
-    DEEPL_API_KEY: z.string(),
     ELEVEN_LABS_API_KEY: z.string(),
-    PORT: z.coerce.number(),
-    BASE_URL_API: z.string(),
+    BASE_URL_API: z.string().default('http://localhost:3000'),
     GEMINI_API_KEY: z.string(),
   })
   .parse(process.env);

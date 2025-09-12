@@ -5,9 +5,10 @@ import { env } from './utils/env';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { version } from '../package.json';
 import { PrismaExceptionFilter } from './prisma/prisma-exception.filter';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app
     .useGlobalPipes(
       new ValidationPipe({
@@ -15,6 +16,7 @@ async function bootstrap() {
       }),
     )
     .useGlobalFilters(new PrismaExceptionFilter())
+    .useStaticAssets(__dirname + '/../public')
     .enableCors();
 
   const config = new DocumentBuilder()
@@ -27,8 +29,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 
-  Logger.debug(
-    `Server running ${env.BASE_URL_API.includes('https') ? env.BASE_URL_API : await app.getUrl()} version ${version}`,
-  );
+  Logger.debug(`Server running ${env.BASE_URL_API} version ${version}`);
 }
 void bootstrap();
