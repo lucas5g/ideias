@@ -1,5 +1,5 @@
 // const API = 'http://[::1]:3002'
-const API = 'https://ideias.dizelequefez.com.br'
+const API = location.href.includes('127.0.0.1') ? 'http://localhost:3000' : 'https://ideias.dizelequefez.com.br'
 
 async function getPhrases() {
   try {
@@ -20,7 +20,7 @@ async function getPhrases() {
       // Cria a célula com o botão
       const cell = tr.insertCell()
       const button = document.createElement('button')
-      button.className = 'bg-gray-500 h-10 w-10 pt-1 rounded-full hover:bg-gray-400'
+      button.className = 'w-10 h-10 pt-1 bg-gray-500 rounded-full hover:bg-gray-400'
       button.innerHTML = `<i class="ph ph-play"></i>`
 
       cell.appendChild(button)
