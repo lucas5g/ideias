@@ -16,7 +16,7 @@ async function bootstrap() {
       }),
     )
     .useGlobalFilters(new PrismaExceptionFilter())
-    .useStaticAssets(__dirname + '/../public')
+    .useStaticAssets('./public')
     .enableCors();
 
   const config = new DocumentBuilder()
