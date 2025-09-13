@@ -4,7 +4,7 @@ import { UpdatePhraseDto } from './dto/update-phrase.dto';
 import { prisma } from '@/utils/prisma';
 import { elevenLabs } from '@/utils/eleven-labs';
 import { TagService } from '@/tag/tag.service';
-import { Prisma } from '@prisma/client';
+import { Phrase, Prisma, Tag } from '@prisma/client';
 import { env } from '@/utils/env';
 import { gemini } from '@/utils/gemini';
 import { FindAllPhraseDto } from './dto/find-all-phrase.dto';
@@ -106,13 +106,7 @@ export class PhraseService {
       },
     });
 
-    return res.map((row) => {
-      return {
-        ...row,
-        tags: row.tags.map((tag) => tag.tag.name),
-        audio: `${env.BASE_URL_API}/phrases/${row.id}/audio.mp3`,
-      };
-    });
+    return res.map((row) => this.response(row));
   }
 
   findOne(id: number) {
@@ -150,5 +144,20 @@ export class PhraseService {
         id,
       },
     });
+  }
+
+  private response(
+    phrase: Pick<Phrase, 'id' | 'portuguese' | 'english'> & {
+      tags: { tag: Partial<Tag> }[];
+    },
+  ) {
+    // phrase.tags[0].
+    return {
+      id: phrase.id,
+      portuguese: phrase.portuguese,
+      english: phrase.english,
+      tags: phrase.tags.map((row) => row.tag.name),
+      audio: `${env.BASE_URL_API}/phrase/${phrase.id}/audio`,
+    };
   }
 }

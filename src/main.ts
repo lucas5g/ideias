@@ -20,8 +20,8 @@ async function bootstrap() {
     .enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Translate')
-    .setDescription('The translate API description')
+    .setTitle('Ideias')
+    .setDescription('The ideia API description')
     .setVersion(version)
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

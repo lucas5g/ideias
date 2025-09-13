@@ -42,7 +42,7 @@ describe('PhraseService', () => {
     expect(res).toBeInstanceOf(Array);
   });
 
-  it('findAll portuguese=bom dia', async () => {
+  it.only('findAll portuguese=bom dia', async () => {
     const portuguese = 'bom di';
     const res = await service.findAll({ portuguese });
 

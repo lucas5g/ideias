@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Res,
+  Query,
 } from '@nestjs/common';
 import { PhraseService } from './phrase.service';
 import { CreatePhraseDto } from './dto/create-phrase.dto';
 import { UpdatePhraseDto } from './dto/update-phrase.dto';
 import type { Response } from 'express';
+import { FindAllPhraseDto } from '@/phrase/dto/find-all-phrase.dto';
 
 @Controller('phrases')
 export class PhraseController {
@@ -23,8 +25,8 @@ export class PhraseController {
   }
 
   @Get()
-  findAll() {
-    return this.phraseService.findAll();
+  findAll(@Query() dto?: FindAllPhraseDto) {
+    return this.phraseService.findAll(dto);
   }
 
   @Get(':id')

@@ -1,9 +1,9 @@
 // const API = 'http://[::1]:3002'
 const API = location.href.includes('127.0.0.1') ? 'http://localhost:3000' : 'https://ideias.dizelequefez.com.br'
 
-async function getPhrases() {
+async function getPhrases(params) {
   try {
-    const res = await fetch(API + '/phrases')
+    const res = await fetch(API + `/phrases?${new URLSearchParams(params)}`)
     const data = await res.json()
 
     const tbody = document.querySelector('tbody')
@@ -57,10 +57,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.querySelector('#form-search').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const formData = new FormData(e.target);
-  const payload = Object.fromEntries(formData);
+  // const payload = Object.fromEntries(formData);
 
-  console.log(payload)
+  const portuguese = e.target.portuguese.value
+  const english = e.target.english.value
+  const tag = e.target.tag.value
+
+  const payload = {
+    portuguese,
+    english,
+    tag
+  }
+
+  await getPhrases(payload)
+
 })
 
 document.querySelector('#form-create').addEventListener('submit', async (e) => {
