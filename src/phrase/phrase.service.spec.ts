@@ -36,13 +36,15 @@ describe('PhraseService', () => {
     const res = await service.findAll();
 
     for (const row of res) {
-      expect(row.audio).toContain(env.BASE_URL_API);
+      expect(row.audio).toContain(
+        `${env.BASE_URL_API}/phrases/${row.id}/audio.mp3`,
+      );
     }
 
     expect(res).toBeInstanceOf(Array);
   });
 
-  it.only('findAll portuguese=bom dia', async () => {
+  it('findAll portuguese=bom dia', async () => {
     const portuguese = 'bom di';
     const res = await service.findAll({ portuguese });
 
@@ -58,6 +60,13 @@ describe('PhraseService', () => {
     expect(
       res.every((phrase) => phrase.tags.some((row) => row === tag)),
     ).toBeTruthy();
+  });
+
+  it('findAll search=how', async () => {
+    const search = 'How';
+    const res = await service.findAll({ search });
+
+    expect(res.every((phrase) => phrase.english.includes(search))).toBeTruthy();
   });
 
   it('findOne', async () => {

@@ -71,13 +71,64 @@ export class PhraseService {
   }
 
   async findAll(dto?: FindAllPhraseDto) {
+    const select = {
+      id: true,
+      portuguese: true,
+      english: true,
+      tags: {
+        select: {
+          tag: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    };
+
+    if (dto?.search) {
+      const res = await prisma.phrase.findMany({
+        where: {
+          OR: [
+            {
+              portuguese: {
+                contains: dto.search,
+              },
+            },
+            {
+              english: {
+                contains: dto.search,
+              },
+            },
+            {
+              tags: {
+                some: {
+                  tag: {
+                    name: dto.search,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        orderBy: {
+          portuguese: 'asc',
+        },
+        select,
+      });
+
+      return res.map((row) => this.response(row));
+    }
+
     const res = await prisma.phrase.findMany({
       where: {
         portuguese: {
           contains: dto?.portuguese,
+          mode: 'insensitive',
         },
         english: {
           contains: dto?.english,
+          mode: 'insensitive',
         },
         tags: {
           some: {
@@ -90,20 +141,7 @@ export class PhraseService {
       orderBy: {
         portuguese: 'asc',
       },
-      select: {
-        id: true,
-        portuguese: true,
-        english: true,
-        tags: {
-          select: {
-            tag: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
-      },
+      select,
     });
 
     return res.map((row) => this.response(row));
@@ -148,16 +186,15 @@ export class PhraseService {
 
   private response(
     phrase: Pick<Phrase, 'id' | 'portuguese' | 'english'> & {
-      tags: { tag: Partial<Tag> }[];
+      tags: { tag: Pick<Tag, 'name'> }[];
     },
   ) {
-    // phrase.tags[0].
     return {
       id: phrase.id,
       portuguese: phrase.portuguese,
       english: phrase.english,
       tags: phrase.tags.map((row) => row.tag.name),
-      audio: `${env.BASE_URL_API}/phrase/${phrase.id}/audio`,
+      audio: `${env.BASE_URL_API}/phrases/${phrase.id}/audio.mp3`,
     };
   }
 }

@@ -57,17 +57,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.querySelector('#form-search').addEventListener('submit', async (e) => {
   e.preventDefault();
-  // const payload = Object.fromEntries(formData);
-
-  const portuguese = e.target.portuguese.value
-  const english = e.target.english.value
-  const tag = e.target.tag.value
-
-  const payload = {
-    portuguese,
-    english,
-    tag
-  }
+  const formData = new FormData(e.target);
+  const payload = Object.fromEntries(formData);
 
   await getPhrases(payload)
 
