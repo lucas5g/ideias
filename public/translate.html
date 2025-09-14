@@ -36,7 +36,7 @@
 <body class="">
 
   <main class="flex flex-col min-h-screen gap-5 p-10 text-white bg-gray-950">
-    <form class="card" id="form-create">
+    <form class="hidden card" id="form-create">
       <h2 class="title">Create</h2>
 
       <div class="input-group">
@@ -60,9 +60,9 @@
 
     <div class="card">
       <h2 class="title">List</h2>
-      <form class="grid grid-flow-col gap-2" id="form-search">
-        <input type="text" name="search" placeholder="Search portuguese, english or tags"
-          class="col-span-6 input-field">
+      <!-- grid grid-flow-col gap-2 -->
+      <form class="grid grid-flow-col" id="form-search">
+        <input type="text" name="search" placeholder="Search portuguese, english or tags" class="input-field">
         <button class="button">
           <i class="ph ph-magnifying-glass"></i>
         </button>
@@ -71,9 +71,7 @@
       <table>
         <thead class="text-left">
           <tr>
-            <th>N°</th>
-            <th>Portuguese</th>
-            <th>English</th>
+            <th>Phrase</th>
             <th>Audio</th>
           </tr>
         </thead>

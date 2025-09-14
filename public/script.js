@@ -13,9 +13,7 @@ async function getPhrases(params) {
     data.forEach((phrase, index) => {
       const tr = tbody.insertRow()
       tr.className = 'border-b border-gray-400 h-14 last:border-b-0'
-      tr.insertCell().textContent = index + 1
-      tr.insertCell().textContent = phrase.portuguese
-      tr.insertCell().textContent = phrase.english
+      tr.insertCell().innerHTML = `${phrase.portuguese}<br>${phrase.english}`
 
       // Cria a célula com o botão
       const cell = tr.insertCell()
@@ -57,10 +55,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.querySelector('#form-search').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const formData = new FormData(e.target);
-  const payload = Object.fromEntries(formData);
 
-  await getPhrases(payload)
+  const params = new URLSearchParams(window.location.search)
+  params.set('search', e.target.search.value)
+  // console.log(params)
+  // const formData = new FormData(e.target);
+  // const payload = Object.fromEntries(formData);
+
+  // await getPhrases(payload)
 
 })
 
