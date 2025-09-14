@@ -51,7 +51,7 @@ export class PhraseService {
       },
     });
 
-    return phrase;
+    return this.response(phrase);
   }
 
   async create(createPhraseDto: CreatePhraseDto) {
@@ -186,14 +186,14 @@ export class PhraseService {
 
   private response(
     phrase: Pick<Phrase, 'id' | 'portuguese' | 'english'> & {
-      tags: { tag: Pick<Tag, 'name'> }[];
+      tags?: { tag: Pick<Tag, 'name'> }[];
     },
   ) {
     return {
       id: phrase.id,
       portuguese: phrase.portuguese,
       english: phrase.english,
-      tags: phrase.tags.map((row) => row.tag.name),
+      tags: phrase.tags?.map((row) => row.tag.name),
       audio: `${env.BASE_URL_API}/phrases/${phrase.id}/audio.mp3`,
     };
   }

@@ -19,7 +19,7 @@ describe('PhraseService', () => {
 
   it('upsert', async () => {
     const payload: CreatePhraseDto = {
-      portuguese: 'bom dia.',
+      portuguese: 'bom dia',
       tag: 'test2',
     };
 
@@ -58,7 +58,7 @@ describe('PhraseService', () => {
     const res = await service.findAll({ tag });
 
     expect(
-      res.every((phrase) => phrase.tags.some((row) => row === tag)),
+      res.every((phrase) => phrase.tags?.some((row) => row === tag)),
     ).toBeTruthy();
   });
 
