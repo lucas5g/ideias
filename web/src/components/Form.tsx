@@ -1,36 +1,34 @@
-import { Header } from "@/components/Header";
-import { Card } from "./Card";
-import { Input } from "./Input";
-import { Button } from "@/components/Button";
-import { useState, type FormEvent } from "react";
-import { api } from "@/utils/api";
-import { mutate } from "swr";
+import { Header } from '@/components/Header';
+import { Card } from './Card';
+import { Input } from './Input';
+import { Button } from '@/components/Button';
+import { useState, type FormEvent } from 'react';
+import { api } from '@/utils/api';
+import { mutate } from 'swr';
 
 export function Form() {
-
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const portuguese = event.currentTarget.portuguese.value
-    const tag = event.currentTarget.tag.value
+    const portuguese = event.currentTarget.portuguese.value;
+    const tag = event.currentTarget.tag.value;
 
     const payload = {
       portuguese,
-      tag
-    }
+      tag,
+    };
 
     try {
-      setIsLoading(true)
-      await api.post('/phrases', payload)
-      mutate('/phrases')
+      setIsLoading(true);
+      await api.post('/phrases', payload);
+      mutate('/phrases');
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-
   }
 
   return (
@@ -40,11 +38,8 @@ export function Form() {
 
         <Input name="portuguese" placeholder="Portuguese" />
         <Input name="tag" placeholder="Tag" />
-        <Button>
-          {isLoading ? 'Saving...' : 'Save'}
-        </Button>
-
+        <Button>{isLoading ? 'Saving...' : 'Save'}</Button>
       </Card>
     </form>
-  )
+  );
 }

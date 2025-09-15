@@ -1,5 +1,5 @@
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function Card({ children }: Props) {
@@ -7,6 +7,5 @@ export function Card({ children }: Props) {
     <div className="bg-gray-800 p-10 rounded flex flex-col gap-5 w-full">
       {children}
     </div>
-  )
-
+  );
 }

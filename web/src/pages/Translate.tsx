@@ -1,5 +1,5 @@
-import { Form } from "@/components/Form";
-import { Table } from "@/components/Table";
+import { Form } from '@/components/Form';
+import { Table } from '@/components/Table';
 
 export function Translate() {
   return (
@@ -7,6 +7,5 @@ export function Translate() {
       <Form />
       <Table />
     </>
-  )
-
+  );
 }

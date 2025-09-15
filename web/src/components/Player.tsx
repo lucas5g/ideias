@@ -1,5 +1,5 @@
-import { PauseIcon, PlayIcon } from "@phosphor-icons/react";
-import { useRef, useState } from "react";
+import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
+import { useRef, useState } from 'react';
 
 interface Props {
   audio: string;
@@ -12,8 +12,7 @@ export function Player({ audio }: Props) {
   function handleAudio() {
     if (!audioRef.current) {
       audioRef.current = new Audio(audio);
-      audioRef.current.addEventListener("ended", () => setIsPlaying(false));
-
+      audioRef.current.addEventListener('ended', () => setIsPlaying(false));
     }
 
     const el = audioRef.current;
@@ -28,10 +27,10 @@ export function Player({ audio }: Props) {
   }
 
   return (
-    <button 
+    <button
       className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-600 hover:bg-gray-500 hover:cursor-pointer"
       onClick={handleAudio}
-      >
+    >
       {isPlaying ? <PauseIcon size={23} /> : <PlayIcon size={23} />}
     </button>
   );

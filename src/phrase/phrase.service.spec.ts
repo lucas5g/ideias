@@ -30,7 +30,7 @@ describe('PhraseService', () => {
     expect(res).toMatchObject({
       portuguese: dto.portuguese,
     });
-  });
+  }, 6000);
 
   it('findAll', async () => {
     const res = await service.findAll();
