@@ -10,6 +10,7 @@ import { fetcher } from '@/utils/fetcher';
 import { useSearchParams } from 'react-router';
 import { useAppContext } from '@/contexts/AppContext';
 import { api } from '@/utils/api';
+import { Loading } from '@/components/Loading';
 interface Phrase {
   id: number;
   portuguese: string;
@@ -35,14 +36,13 @@ export function Table() {
 
   }, [])
 
-  const { data, error, isLoading } = swr(`${uri}`, fetcher<Phrase[]>)
-
+  const { data, error, isLoading } = fetcher<Phrase[]>(uri)
 
   if (error) {
 
     return <div>failed to load</div>;
   }
-  if (isLoading) return <div>loading...</div>;
+  // if (isLoading) return <div>loading...</div>;
 
   function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -54,13 +54,17 @@ export function Table() {
   }
 
   return (
+
     <Card>
       <Header title="List" />
-      <form onSubmit={handleSearch} className="flex gap-3">
+      <form onSubmit={handleSearch} className="flex 
+        justify-items-center 
+        items-center 
+        gap-3">
         <Input
           name="search"
           isNotLabel
-          placeholder="Search portuguese, english or tags"
+          // placeholder="Search portuguese, english or tags"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
 
@@ -69,42 +73,47 @@ export function Table() {
           <MagnifyingGlassIcon size={23} />
         </Button>
       </form>
-      <table>
-        <thead className="text-left">
-          <tr>
-            <th>Phrase</th>
-            <th>Audio</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.map((phrase) => {
-            return (
-              <tr
-                key={phrase.id}
-                className="border-b border-gray-600 h-14 last:border-0 hover:bg-gray-700 hover:cursor-pointer transition-all"
-                onDoubleClick={() => {
-                  const res = confirm(`Deletar frase "${phrase.english.toUpperCase()}"`)
-                  if (res) {
+      {isLoading &&
+        <Loading />
+      }
+      {!isLoading &&
+        <table>
+          <thead className="text-left">
+            <tr>
+              <th>Phrase</th>
+              <th>Audio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((phrase) => {
+              return (
+                <tr
+                  key={phrase.id}
+                  className="border-b border-gray-600 h-14 last:border-0 hover:bg-gray-700 hover:cursor-pointer transition-all"
+                  onDoubleClick={() => {
+                    const res = confirm(`Deletar frase "${phrase.english.toUpperCase()}"`)
+                    if (res) {
 
-                    api.delete('/phrases/' + phrase.id)
-                      .catch(error => console.log(error))
+                      api.delete('/phrases/' + phrase.id)
+                        .catch(error => console.log(error))
 
-                    mutate(uri)
-                  }
-                }}
-              >
-                <td>
-                  {phrase.portuguese} <br />
-                  {phrase.english}
-                </td>
-                <td>
-                  <Player audio={phrase.audio} />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                      mutate(uri)
+                    }
+                  }}
+                >
+                  <td>
+                    {phrase.portuguese} <br />
+                    {phrase.english}
+                  </td>
+                  <td>
+                    <Player audio={phrase.audio} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      }
     </Card>
   );
 }
