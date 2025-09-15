@@ -5,7 +5,7 @@ export function App() {
 
   return (
 
-    <div className="flex flex-col min-h-screen gap-5 p-10 text-white bg-gray-950">
+    <div className="flex min-h-screen gap-5 p-10 text-white bg-gray-950">
       <Form />
 
       <Table />

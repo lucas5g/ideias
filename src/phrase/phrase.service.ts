@@ -111,9 +111,6 @@ export class PhraseService {
             },
           ],
         },
-        orderBy: {
-          portuguese: 'asc',
-        },
         select,
       });
 
@@ -137,9 +134,6 @@ export class PhraseService {
             },
           },
         },
-      },
-      orderBy: {
-        portuguese: 'asc',
       },
       select,
     });
