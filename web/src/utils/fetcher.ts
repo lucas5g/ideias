@@ -1,5 +1,4 @@
 import { api } from '@/utils/api';
-import { delay } from '@/utils/delay';
 import swr from 'swr'
 export function fetcher<T>(
   uri: string,
