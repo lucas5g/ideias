@@ -5,13 +5,14 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
 import prettier from "eslint-plugin-prettier";
+import { defineConfig } from 'vite'
 
 
-export default tseslint.config([
+export default defineConfig(
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
-    plugins:{
+    plugins: {
       prettier
     },
     extends: [
@@ -29,4 +30,4 @@ export default tseslint.config([
       "prettier/prettier": ["error", { singleQuote: true }], // P
     }
   },
-])
+)

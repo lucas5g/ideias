@@ -4,7 +4,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import jestPlugin from 'eslint-plugin-jest';
-export default tseslint.config(
+export default [
   {
     ignores: ['eslint.config.mjs'],
   },
@@ -36,4 +36,5 @@ export default tseslint.config(
       'jest/no-focused-tests': 'error',
     },
   },
-);
+
+];
