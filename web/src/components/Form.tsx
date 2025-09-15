@@ -4,6 +4,7 @@ import { Input } from "./Input";
 import { Button } from "@/components/Button";
 import { useState, type FormEvent } from "react";
 import { api } from "@/utils/api";
+import { mutate } from "swr";
 
 export function Form() {
 
@@ -23,6 +24,7 @@ export function Form() {
     try {
       setIsLoading(true)
       await api.post('/phrases', payload)
+      mutate('/phrases')
     } catch (error) {
       console.log(error)
     } finally {

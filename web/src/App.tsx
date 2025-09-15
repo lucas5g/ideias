@@ -1,15 +1,17 @@
-import { Form } from "@/components/Form";
-import { Table } from "./components/Table";
+import { Layout } from "@/components/Layout";
+import { Translate } from "@/pages/Translate";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 export function App() {
-
   return (
-
-    <div className="flex min-h-screen gap-5 p-10 text-white bg-gray-950">
-      <Form />
-
-      <Table />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />} >
+          <Route path="/" element={<Translate />} />
+          <Route path="/translate" element={<Translate />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 
 }

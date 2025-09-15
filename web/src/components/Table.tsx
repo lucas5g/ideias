@@ -1,13 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Button } from "./Button";
 import { Card } from "./Card";
 import { Input } from "./Input";
-import { MagnifyingGlassIcon, PauseIcon, PlayIcon } from '@phosphor-icons/react'
-import { api } from "@/utils/api";
+import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { Header } from "@/components/Header";
 import { Player } from "@/components/Player";
-import { useSearchParams } from 'react-router'
-import swr from 'swr'
+import swr, { mutate } from 'swr'
 import { fetcher } from "@/utils/fetcher";
 interface Phrase {
   id: number;
@@ -17,7 +15,13 @@ interface Phrase {
   audio: string
 }
 export function Table() {
-  const [search, setSearch] = useState<string>("")
+  const [search] = useState<string>("")
+  // const [searchApi, setSearchApi] = useState<string>("")
+
+  // const { data, error, isLoading } = fetcher<Phrase[]>(
+  //   '/phrases',
+  //   { search }
+  // )
 
   const { data, error, isLoading } = swr(
     ['/phrases', search],
@@ -27,47 +31,33 @@ export function Table() {
   if (error) return <div>failed to load</div>
   if (isLoading) return <div>loading...</div>
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const search = event.currentTarget.search.value
+    // setSearch(searchActual)
+    // mutate(['/phrases', { search }])
+    mutate('/phrases', search)
 
-
-  // useEffect(() => {
-  //   const searchActual = searchParams.get('search')
-
-  //   if (searchActual) {
-  //     setSearch(searchActual)
-  //   }
-
-  // }, [])
-
-  // async function getPhrases() {
-  //   const { data } = await api.get('/phrases', {
-  //     params: {
-  //       search
-  //     }
-  //   })
-
-  //   setList(data)
-  // }
+  }
 
   return (
     <Card>
 
       <Header title="List" />
-      <form onSubmit={event => {
-        event.preventDefault()
-        if (search) {
-          setSearchParams({ search })
-        }
-      }} >
+      <form
+        onSubmit={handleSearch}
+        className="flex gap-3"
+      >
         <Input
           name="search"
-          label="Search"
+          isNotLabel
+          // label="Search"
           placeholder="Search portuguese, english or tags"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+        // value={search}
+        // onChange={(e) => setSearch(e.target.value)}
 
         />
-        <Button>
+        <Button width="w-[20%]">
           <MagnifyingGlassIcon size={23} />
         </Button>
       </form>
@@ -85,7 +75,7 @@ export function Table() {
                 key={phrase.id}
                 className="border-b border-gray-600 h-14 last:border-0 hover:bg-gray-700 hover:cursor-pointer transition-all"
                 onDoubleClick={() => {
-                  const res = confirm(`Deletar frase "${phrase.english.toUpperCase()}"`)
+                  // const res = confirm(`Deletar frase "${phrase.english.toUpperCase()}"`)
 
                   // if (res) {
                   //   const newList = list.filter(item => item.id !== phrase.id)

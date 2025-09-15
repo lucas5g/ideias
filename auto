@@ -1,4 +1,8 @@
 #!/bin/bash
+
+cd web && ./auto && cd ../
+
+
 npm run lint 
 
 if [ "$?" != 0 ]; then 
@@ -12,6 +16,9 @@ if [ "$?" != 0 ]; then
   echo "Erro nos tests"
   exit 
 fi
+
+
+
 
 git add .
 git commit -m "$1"
