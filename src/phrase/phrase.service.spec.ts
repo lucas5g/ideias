@@ -74,4 +74,15 @@ describe('PhraseService', () => {
 
     expect(res).toBeInstanceOf(Object);
   });
+
+  // it.only('create formdata', async () => {
+  //   const payload: CreatePhraseDto = {
+  //     portuguese: 'bom dia',
+  //     tag: 'test2',
+  //   };
+
+  //   const formData = new FormData();
+  //   formData.append('portuguese', payload.portuguese);
+  //   formData.append('tag', payload.tag);
+  // });
 });

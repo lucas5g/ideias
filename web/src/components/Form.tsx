@@ -5,9 +5,11 @@ import { Button } from '@/components/Button';
 import { useState, type FormEvent } from 'react';
 import { api } from '@/utils/api';
 import { mutate } from 'swr';
+import { useAppContext } from '@/contexts/AppContext';
 
 export function Form() {
   const [isLoading, setIsLoading] = useState(false);
+  const { uri } = useAppContext();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,7 +25,7 @@ export function Form() {
     try {
       setIsLoading(true);
       await api.post('/phrases', payload);
-      mutate('/phrases');
+      mutate(uri);
     } catch (error) {
       console.log(error);
     } finally {
