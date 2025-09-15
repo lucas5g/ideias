@@ -1,18 +1,17 @@
+import { Header } from "@/components/Header";
 import { Card } from "./Card";
 import { Input } from "./Input";
+import { Button } from "@/components/Button";
 
 export function Form() {
   return (
     <form>
       <Card>
-        <h2 className="title">Create</h2>
+        <Header title="Form" />
 
         <Input name="portuguse" placeholder="Portuguese" />
         <Input name="english" placeholder="English" />
-
-        <button id="button-submit" className="button">
-          Save
-        </button>
+        <Button>Save</Button>
 
       </Card>
     </form>
