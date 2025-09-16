@@ -1,10 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Loading } from '@/components/Loading';
 import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import { useSearchParams } from 'react-router';
 import { useAppContext } from '@/contexts/AppContext';
 import { fetcher } from '@/utils/fetcher';
-import { Button, Card, Flex, HStack, Input, Skeleton, SkeletonCircle, SkeletonText, Stack, Table } from '@chakra-ui/react';
+import { Button, Card, Flex,  Input,   SkeletonText,  Table } from '@chakra-ui/react';
 import { Player } from '@/components/Player';
 interface Phrase {
   id: number;

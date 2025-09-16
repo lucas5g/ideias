@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
 

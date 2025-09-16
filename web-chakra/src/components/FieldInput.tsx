@@ -1,6 +1,6 @@
-import { Field, Input } from "@chakra-ui/react";
+import { Field, Input, type InputProps } from "@chakra-ui/react";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
+interface Props extends InputProps {}
 
 export function FieldInput(props: Props){
   return (
