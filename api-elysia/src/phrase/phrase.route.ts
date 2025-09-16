@@ -20,7 +20,7 @@ export const phraseRoute = (app: Elysia) =>
             'Content-Type': 'audio/mpeg',
             'Content-Length': audio.length.toString()
           }
-        })
+        });
 
 
       }, {

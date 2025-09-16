@@ -1,10 +1,9 @@
-import { describe, it } from "bun:test";
-import { gemini } from "./gemini";
+import { describe, expect, it } from 'bun:test';
+import { gemini } from './gemini';
 
-describe("Utils", () => {
+describe('Utils', () => {
   it('gemini', async () => {
     const res = await gemini('água');
-
-    console.log(res);
-  })
+    expect(res).toBe('water');
+  });
 });

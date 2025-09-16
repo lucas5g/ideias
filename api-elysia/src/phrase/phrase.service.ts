@@ -35,7 +35,7 @@ export class PhraseService {
         id
       }
     });
-    return Buffer.from(res.audio)
+    return Buffer.from(res.audio);
   }
 
   async create(data: CreatePhraseDto) {
@@ -54,7 +54,6 @@ export class PhraseService {
   }
 
   delete(id: number) {
-    console.log({ id })
     return prisma.phrase.delete({ where: { id } });
   }
 
@@ -65,6 +64,6 @@ export class PhraseService {
       english: phrase.english,
       audio: `${env.BASE_URL_API}/phrases/${phrase.id}/audio.mp3`,
       tags: phrase.tags
-    }
+    };
   }
 }

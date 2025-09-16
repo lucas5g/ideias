@@ -16,7 +16,6 @@ describe('PhraseService', () => {
   });
 
   afterAll(async () => {
-    console.log({ createdId, afterAll: true });
     await service.delete(createdId);
   });
 
@@ -28,7 +27,7 @@ describe('PhraseService', () => {
     expect(res).toBeArray();
   });
 
-  it.only('findOne', async () => {
+  it('findOne', async () => {
     const res = await service.findOne(createdId);
     expect(res).toHaveProperty('id', createdId);
   });
