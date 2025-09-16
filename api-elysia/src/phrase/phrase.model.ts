@@ -1,11 +1,13 @@
-import { t } from 'elysia'
+import { t, Static } from 'elysia';
 export const createPhraseSchema = t.Object({
   portuguese: t.String(),
   english: t.String(),
   tags: t.Array(t.String()),
-})
+});
 
-export const updatePhraseSchema = t.Partial(createPhraseSchema)
+export const updatePhraseSchema = t.Partial(createPhraseSchema);
+export const findAllPhraseSchema = t.Partial(createPhraseSchema);
 
-export type CreatePhraseDto = typeof createPhraseSchema.static
-export type UpdatePhraseDto = typeof updatePhraseSchema.static
+export type CreatePhraseDto = Static<typeof createPhraseSchema>
+export type UpdatePhraseDto = Static<typeof updatePhraseSchema>
+export type FindAllPhraseDto = Static<typeof findAllPhraseSchema>

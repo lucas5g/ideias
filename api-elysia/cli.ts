@@ -20,42 +20,45 @@ const specPath = path.join(basePath, `${moduleName}.spec.ts`)
 
 // ------------------- TEMPLATES -------------------
 function getModelTemplate() {
-  return `import { t } from 'elysia'
+  return `import { t, Static } from 'elysia'
 export const create${capitalized}Schema = t.Object({
   name: t.String(),
 })
 
 export const update${capitalized}Schema = t.Partial(create${capitalized}Schema)
+export const findAll${capitalized}Schema = t.Partial(create${capitalized}Schema)
 
-export type Create${capitalized}Dto = typeof create${capitalized}Schema.static
-export type Update${capitalized}Dto = typeof update${capitalized}Schema.static
+export type Create${capitalized}Dto = Static<typeof create${capitalized}Schema>
+export type Update${capitalized}Dto = Static<typeof update${capitalized}Schema>
+export type FindAll${capitalized}Dto = Static<typeof findAll${capitalized}Schema>
 `
 }
 
 function getServiceTemplate() {
   return `import { prisma } from '@/utils/prisma'
-import { Create${capitalized}Dto, Update${capitalized}Dto } from "@/${moduleName}/${moduleName}.model"
+import { Create${capitalized}Dto, Update${capitalized}Dto, FindAll${capitalized}Dto } from "@/${moduleName}/${moduleName}.model"
 
 export class ${capitalized}Service {
-  async findAll() {
-    return prisma.${moduleName}.findMany()
+  findAll(where?: FindAll${capitalized}Dto) {
+    return prisma.${moduleName}.findMany({
+      where,
+    })
   }
 
-  async findOne(id: number) {
+  findOne(id: number) {
     return prisma.${moduleName}.findUnique({ where: { id } })
   }
 
-  async create(data: Create${capitalized}Dto) {
+  create(data: Create${capitalized}Dto) {
     return prisma.${moduleName}.create({ data })
   }
 
-  async update(id: number, data: Update${capitalized}Dto) {
+  update(id: number, data: Update${capitalized}Dto) {
     return prisma.${moduleName}.update({ where: { id }, data })
   }
 
-  async delete(id: number) {
-    await prisma.${moduleName}.delete({ where: { id } })
-    return true
+  delete(id: number) {
+    return prisma.${moduleName}.delete({ where: { id } })
   }
 }
 `
@@ -83,9 +86,9 @@ export const ${moduleName}Route = (app: Elysia) =>
 function getSpecTemplate() {
   return `import { describe, it, beforeAll, afterAll, expect } from 'bun:test'
 import { ${capitalized}Service } from '@/${moduleName}/${moduleName}.service'
-import { Create${capitalized}Dto, Update${capitalized}Dto } from "@/${moduleName}/${moduleName}.model"
+import { Create${capitalized}Dto, Update${capitalized}Dto } from '@/${moduleName}/${moduleName}.model'
 
-describe("${capitalized}Service", () => {
+describe('${capitalized}Service', () => {
   const service = new ${capitalized}Service()
   let createdId: number
 
@@ -101,17 +104,17 @@ describe("${capitalized}Service", () => {
     await service.delete(createdId)
   })
 
-  it("findAll", async () => {
+  it('findAll', async () => {
     const res = await service.findAll()
     expect(res).toBeArray()
   })
 
-  it("findOne", async () => {
+  it('findOne', async () => {
     const res = await service.findOne(createdId)
-    expect(res).toHaveProperty("id", createdId)
+    expect(res).toHaveProperty('id', createdId)
   })
 
-  it("update", async () => {
+  it('update', async () => {
     const payload: Update${capitalized}Dto = { 
       name: 'Updated ${capitalized}'
     }
@@ -152,13 +155,17 @@ function updateIndex() {
   }
 
   const useLine = `.use(${moduleName}Route)`
+
   if (!indexContent.includes(useLine)) {
-    indexContent = indexContent.replace(/(\.listen\s*\()/, `${useLine}\n$1`)
+    indexContent = indexContent.replace(/(^\s*)(\.listen\s*\()/m, (match, indent, listenCall) => {
+      return `${indent}${useLine}\n${indent}${listenCall}`
+    })
   }
 
   writeFileSync(indexPath, indexContent)
   console.log(`✅ Registrado ${moduleName}Route em index.ts`)
 }
+
 
 // ------------------- EXECUÇÃO -------------------
 async function generateModule() {

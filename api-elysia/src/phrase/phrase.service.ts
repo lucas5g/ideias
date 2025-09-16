@@ -1,25 +1,32 @@
-import { prisma } from '@/utils/prisma'
-import { CreatePhraseDto, UpdatePhraseDto } from "@/phrase/phrase.model"
+import { prisma } from '@/utils/prisma';
+import { CreatePhraseDto, UpdatePhraseDto, FindAllPhraseDto } from '@/phrase/phrase.model';
 
 export class PhraseService {
-  async findAll() {
-    return prisma.phrase.findMany()
+  findAll(where?: FindAllPhraseDto) {
+    return prisma.phrase.findMany({
+      where:{
+        OR: [
+          { portuguese: { contains: where?.portuguese } },
+          { english: { contains: where?.english } },
+          // { tags: { hasSome: where?.tags ?? [] } },
+        ]
+      }
+    });
   }
 
-  async findOne(id: number) {
-    return prisma.phrase.findUnique({ where: { id } })
+  findOne(id: number) {
+    return prisma.phrase.findUnique({ where: { id } });
   }
 
-  async create(data: CreatePhraseDto) {
-    return prisma.phrase.create({ data })
+  create(data: CreatePhraseDto) {
+    return prisma.phrase.create({ data });
   }
 
-  async update(id: number, data: UpdatePhraseDto) {
-    return prisma.phrase.update({ where: { id }, data })
+  update(id: number, data: UpdatePhraseDto) {
+    return prisma.phrase.update({ where: { id }, data });
   }
 
-  async delete(id: number) {
-    await prisma.phrase.delete({ where: { id } })
-    return true
+  delete(id: number) {
+    return prisma.phrase.delete({ where: { id } });
   }
 }
