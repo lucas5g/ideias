@@ -42,8 +42,6 @@ export function Table() {
 
     return <div>failed to load</div>;
   }
-  // if (isLoading) return <div>loading...</div>;
-
   function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     // setSearch(searchControl)
