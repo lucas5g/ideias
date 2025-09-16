@@ -1,4 +1,5 @@
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
+import { paramsSchema } from '@/utils/params.schema';
 import { PhraseService } from '@/phrase/phrase.service';
 import { createPhraseSchema, updatePhraseSchema } from '@/phrase/phrase.model';
 
@@ -9,15 +10,16 @@ export const phraseRoute = (app: Elysia) =>
     app
       .get('/', () => phraseService.findAll())
       .get('/:id', ({ params }) => phraseService.findOne(params.id), {
-        params: t.Object({
-          id: t.Number()
-        })
+        params: paramsSchema
       })
       .post('/', ({ body }) => phraseService.create(body), { 
-        body: createPhraseSchema
+        body: createPhraseSchema 
       })
-      .put('/:id', ({ params, body }) => phraseService.update(+params.id, body), { 
-        body: updatePhraseSchema
-       })
-      .delete('/:id', ({ params }) => phraseService.delete(+params.id))
+      .patch('/:id', ({ params, body }) => phraseService.update(params.id, body), {
+        params: paramsSchema,
+        body: updatePhraseSchema 
+      })
+      .delete('/:id', ({ params }) => phraseService.delete(params.id), {
+        params: paramsSchema
+      })
   );

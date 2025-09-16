@@ -4,12 +4,12 @@ import { CreatePhraseDto, UpdatePhraseDto, FindAllPhraseDto } from '@/phrase/phr
 export class PhraseService {
   findAll(where?: FindAllPhraseDto) {
     return prisma.phrase.findMany({
-      where:{
-        OR: [
-          { portuguese: { contains: where?.portuguese } },
-          { english: { contains: where?.english } },
-          // { tags: { hasSome: where?.tags ?? [] } },
-        ]
+      where: {
+        portuguese: { contains: where?.portuguese },
+        english: { contains: where?.english },
+        tags: where?.tags && {
+          hasSome: where?.tags
+        }      
       }
     });
   }
@@ -19,7 +19,9 @@ export class PhraseService {
   }
 
   create(data: CreatePhraseDto) {
-    return prisma.phrase.create({ data });
+    return prisma.phrase.create({ 
+      data
+    });
   }
 
   update(id: number, data: UpdatePhraseDto) {

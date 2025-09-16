@@ -66,19 +66,29 @@ export class ${capitalized}Service {
 
 function getRouteTemplate() {
   return `import { Elysia } from 'elysia'
+import { paramsSchema } from '@/utils/params.schema'
 import { ${capitalized}Service } from '@/${moduleName}/${moduleName}.service'
 import { create${capitalized}Schema, update${capitalized}Schema } from '@/${moduleName}/${moduleName}.model'
 
 const ${moduleName}Service = new ${capitalized}Service()
 
 export const ${moduleName}Route = (app: Elysia) =>
-  app.group("/${moduleName}s", app =>
+  app.group('/${moduleName}s', app =>
     app
-      .get("/", () => ${moduleName}Service.findAll())
-      .get("/:id", ({ params }) => ${moduleName}Service.findOne(Number(params.id)))
-      .post("/", ({ body }) => ${moduleName}Service.create(body), { body: create${capitalized}Schema })
-      .put("/:id", ({ params, body }) => ${moduleName}Service.update(Number(params.id), body), { body: update${capitalized}Schema })
-      .delete("/:id", ({ params }) => ${moduleName}Service.delete(Number(params.id)))
+      .get('/', () => ${moduleName}Service.findAll())
+      .get('/:id', ({ params }) => ${moduleName}Service.findOne(params.id), {
+        params: paramsSchema
+      })
+      .post('/', ({ body }) => ${moduleName}Service.create(body), { 
+        body: create${capitalized}Schema 
+      })
+      .patch('/:id', ({ params, body }) => ${moduleName}Service.update(params.id, body), {
+        params: paramsSchema,
+        body: update${capitalized}Schema 
+      })
+      .delete('/:id', ({ params }) => ${moduleName}Service.delete(params.id), {
+        params: paramsSchema
+      })
   )
 `
 }
