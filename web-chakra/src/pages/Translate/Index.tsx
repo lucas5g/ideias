@@ -1,12 +1,12 @@
-// import { Form } from '@/components/Form';
-import { Table } from '@/components/Table';
 import { AppProvider } from '@/contexts/AppContext';
+import { List } from './List';
+import { Form } from './Form';
 
 export function Translate() {
   return (
     <AppProvider >
-      {/* <Form /> */}
-      <Table />
+      <Form />
+      <List />
     </AppProvider>
   );
 }

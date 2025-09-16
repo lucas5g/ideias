@@ -10,8 +10,12 @@
     "lint": "eslint src --fix"
   },
   "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^2.15.0",
+    "@elysiajs/cors": "^1.4.0",
+    "@google/genai": "^1.19.0",
     "@prisma/client": "^6.16.1",
-    "elysia": "latest"
+    "elysia": "latest",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.44.0",

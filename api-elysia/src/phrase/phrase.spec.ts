@@ -8,8 +8,7 @@ describe('PhraseService', () => {
 
   beforeAll(async () => {
     const payload: CreatePhraseDto = {
-      portuguese: 'ola',
-      english: 'hello',
+      portuguese: 'test',
       tags: ['test', 't1']
     };
     const res = await service.create(payload);
@@ -17,15 +16,19 @@ describe('PhraseService', () => {
   });
 
   afterAll(async () => {
+    console.log({ createdId, afterAll: true });
     await service.delete(createdId);
   });
 
   it('findAll', async () => {
     const res = await service.findAll();
+    for(const phrase of res) {
+      expect(Object.keys(phrase)).toEqual(['id', 'portuguese', 'english', 'audio', 'tags']);
+    }
     expect(res).toBeArray();
   });
 
-  it('findOne', async () => {
+  it.only('findOne', async () => {
     const res = await service.findOne(createdId);
     expect(res).toHaveProperty('id', createdId);
   });

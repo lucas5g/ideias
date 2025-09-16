@@ -1,3 +1,4 @@
+import { elevenLabs } from '@/utils/eleven-labs'
 import { prisma } from '@/utils/prisma'
 async function main(){
   await prisma.phrase.createMany({
@@ -5,12 +6,14 @@ async function main(){
       {
         portuguese: 'ola',
         english: 'hello',
-        tags: ['test', 't1']
+        tags: ['test', 't1'],
+        audio: await elevenLabs('hello')
       },
       {
         portuguese: 'bom dia',
         english: 'good morning',
-        tags: ['test']
+        tags: ['test'],
+        audio: await elevenLabs('good morning')
       }
     ]
   })

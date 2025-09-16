@@ -4,7 +4,8 @@ import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import { useSearchParams } from 'react-router';
 import { useAppContext } from '@/contexts/AppContext';
 import { fetcher } from '@/utils/fetcher';
-import { Button, Card, Flex, HStack, Input, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
+import { Button, Card, Flex, HStack, Input, Skeleton, SkeletonCircle, SkeletonText, Stack, Table } from '@chakra-ui/react';
+import { Player } from '@/components/Player';
 interface Phrase {
   id: number;
   portuguese: string;
@@ -12,14 +13,13 @@ interface Phrase {
   tags: string[];
   audio: string;
 }
-export function Table() {
+export function List() {
   const [search, setSearch] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams()
   const { uri, setUri } = useAppContext();
 
   useEffect(() => {
     const search = searchParams.get('search')
-
 
     if (search) {
       setUri(`/phrases?search=${search}`)
@@ -67,46 +67,34 @@ export function Table() {
         {isLoading &&
           <SkeletonText noOfLines={3} gap="4" />
         }
+        {!isLoading &&
+          <Table.Root>
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader>Phrase</Table.ColumnHeader>
+                <Table.ColumnHeader textAlign={'end'}>
+                  Audio
+                </Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {data?.map((phrase) => {
+                return (
+                  <Table.Row key={phrase.id}>
+                    <Table.Cell>
+                      {phrase.portuguese} <br />
+                      {phrase.english}
+                    </Table.Cell>
+                    <Table.Cell textAlign={'end'}>
+                      <Player audio={phrase.audio} />
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table.Root>
+        }
       </Card.Body>
-      {!isLoading &&
-        <table>
-          <thead className="text-left">
-            <tr>
-              <th>Phrase</th>
-              <th>Audio</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.map((phrase) => {
-              return (
-                <tr
-                  key={phrase.id}
-                  className="border-b border-gray-600 h-14 last:border-0 hover:bg-gray-700 hover:cursor-pointer transition-all"
-                  onDoubleClick={() => {
-                    const res = confirm(`Deletar frase "${phrase.english.toUpperCase()}"`)
-                    if (res) {
-
-                      api.delete('/phrases/' + phrase.id)
-                        .catch(error => console.log(error))
-
-                      mutate(uri)
-                    }
-                  }}
-                >
-                  <td>
-                    {phrase.portuguese} <br />
-                    {phrase.english}
-                  </td>
-                  <td>
-                    {/* <Player audio={phrase.audio} /> */}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      }
-
     </Card.Root>
   );
 }

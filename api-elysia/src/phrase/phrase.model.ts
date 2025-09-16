@@ -1,7 +1,7 @@
 import { t, Static } from 'elysia';
 export const createPhraseSchema = t.Object({
   portuguese: t.String(),
-  english: t.String(),
+  english: t.Optional(t.String()),
   tags: t.Array(t.String()),
 });
 

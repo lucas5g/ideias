@@ -12,12 +12,26 @@ export const phraseRoute = (app: Elysia) =>
       .get('/:id', ({ params }) => phraseService.findOne(params.id), {
         params: paramsSchema
       })
-      .post('/', ({ body }) => phraseService.create(body), { 
-        body: createPhraseSchema 
+      .get('/:id/audio.mp3', async ({ params }) => {
+        const audio = await phraseService.findOneAudio(params.id);
+        return new Response(audio, {
+          status: 200,
+          headers: {
+            'Content-Type': 'audio/mpeg',
+            'Content-Length': audio.length.toString()
+          }
+        })
+
+
+      }, {
+        params: paramsSchema
+      })
+      .post('/', ({ body }) => phraseService.create(body), {
+        body: createPhraseSchema
       })
       .patch('/:id', ({ params, body }) => phraseService.update(params.id, body), {
         params: paramsSchema,
-        body: updatePhraseSchema 
+        body: updatePhraseSchema
       })
       .delete('/:id', ({ params }) => phraseService.delete(params.id), {
         params: paramsSchema
